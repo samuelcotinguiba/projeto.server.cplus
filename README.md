@@ -302,7 +302,7 @@ Veja [USAGE.md](USAGE.md) para detalhes de desenvolvimento.
 
 ## 📄 Licença
 
-MIT License — Projeto educacional para portfólio técnico.
+Projeto educacional para portfólio técnico.
 
 ---
 
@@ -311,8 +311,8 @@ MIT License — Projeto educacional para portfólio técnico.
 **Samuel Cotinguiba**  
 Projeto de portfólio — Database Engine em C++
 
-📧 Email: [seu-email]  
-🔗 LinkedIn: [seu-linkedin]  
+📧 Email: samuelcotinguiba@gmail.com 
+🔗 LinkedIn: samuelcotinguiba
 🐙 GitHub: [@samuelcotinguiba](https://github.com/samuelcotinguiba)
 
 ---
