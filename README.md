@@ -4,7 +4,6 @@
 
 [![Language](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
