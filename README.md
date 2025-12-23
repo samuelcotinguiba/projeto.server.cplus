@@ -12,11 +12,11 @@
 Desenvolver um **database engine funcional** (não um wrapper), inspirado em SQLite/PostgreSQL, que implementa:
 
 - ✅ Linguagem SQL subset
-- ✅ Parser e Lexer próprios  
-- ✅ Árvore Sintática Abstrata (AST)
-- ✅ Motor de execução de queries
-- ✅ Persistência em disco
-- ✅ Sistema de catálogo (schemas)
+- ✅ Lexer (Analisador Léxico) próprio
+- 🔄 Parser e AST (em desenvolvimento)
+- 🔄 Motor de execução de queries (planejado)
+- 🔄 Persistência em disco (planejado)
+- 🔄 Sistema de catálogo (schemas) (planejado)
 - 🔄 Indexação primária (planejado)
 - 🔄 Write-Ahead Logging (planejado)
 
@@ -34,9 +34,6 @@ make
 
 # Executar
 ./miniql
-
-# Demo
-./demo.sh
 ```
 
 ### Uso Básico
@@ -48,6 +45,8 @@ miniql> INSERT INTO users VALUES (1, 'Ana');
 miniql> SELECT * FROM users;
 miniql> .exit              -- Sair
 ```
+
+> 📖 **Guia completo:** [doc/GUIDE.md](doc/GUIDE.md)
 
 ---
 
@@ -83,19 +82,22 @@ DELETE FROM users WHERE id = 2;
 
 ```
 ┌─────────────┐
-│  SQL Shell  │  Interface interativa
+│  SQL Shell  │  Interface interativa (✅ Implementado)
 └──────┬──────┘
        │
 ┌──────▼──────┐
-│    Lexer    │  Tokenização
+│    Lexer    │  Tokenização SQL (✅ Implementado)
+│             │  • Reconhece keywords, identificadores, literais
+│             │  • Operadores e delimitadores
+│             │  • Tratamento de erros léxicos
+└──────┬──────┘
+       │ Token Stream
+┌──────▼──────┐
+│   Parser    │  Análise Sintática (🔄 Próximo)
 └──────┬──────┘
        │
 ┌──────▼──────┐
-│   Parser    │  Análise Sintática
-└──────┬──────┘
-       │
-┌──────▼──────┐
-│     AST     │  Árvore de comandos
+│     AST     │  Árvore de comandos (⏳ Planejado)
 └──────┬──────┘
        │
 ┌──────▼──────┐
@@ -275,6 +277,23 @@ Isso é **raríssimo** em portfólio de estudante/júnior.
 
 ---
 
+## 📚 Documentação
+
+### Para Começar
+- **[doc/GUIDE.md](doc/GUIDE.md)** — Guia completo de instalação, uso e desenvolvimento
+
+### Documentação Técnica
+- **[doc/architecture.md](doc/architecture.md)** — Arquitetura detalhada do sistema
+- **[doc/development-guide.md](doc/development-guide.md)** — Guia para desenvolvedores
+- **[doc/technical-decisions.md](doc/technical-decisions.md)** — Decisões técnicas e justificativas
+- **[doc/shell-implementation.md](doc/shell-implementation.md)** — Detalhes do REPL
+- **[WORKFLOW.md](WORKFLOW.md)** — Roadmap e workflow de desenvolvimento
+
+### Documentação de Componentes
+- **[src/lexer/README.md](src/lexer/README.md)** — Analisador Léxico (Lexer)
+
+---
+
 ## 🤝 Contribuindo
 
 1. Fork o repositório
@@ -283,7 +302,7 @@ Isso é **raríssimo** em portfólio de estudante/júnior.
 4. Push: `git push origin feature/nome`
 5. Abra um Pull Request
 
-Veja [USAGE.md](USAGE.md) para detalhes de desenvolvimento.
+Veja [doc/GUIDE.md](doc/GUIDE.md) para detalhes de desenvolvimento.
 
 ---
 
@@ -310,8 +329,12 @@ Projeto educacional para portfólio técnico.
 **Samuel Cotinguiba**  
 Projeto de portfólio — Database Engine em C++
 
+<<<<<<< HEAD
 📧 Email: samuelcotinguiba@gmail.com 
 🔗 LinkedIn: samuelcotinguiba
+=======
+📧 Email: [samuelcotinguiba@gmail.com]  
+🔗 LinkedIn: [samuelcotinguiba]  
 🐙 GitHub: [@samuelcotinguiba](https://github.com/samuelcotinguiba)
 
 ---

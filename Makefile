@@ -10,10 +10,15 @@ SRC_DIR = src
 BUILD_DIR = build
 BIN_DIR = .
 
-# Arquivos fonte
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp)
+# Arquivos fonte (excluindo lexer_demo.cpp)
+SOURCES = $(filter-out $(SRC_DIR)/lexer/lexer_demo.cpp, \
+          $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/**/*.cpp))
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 TARGET = $(BIN_DIR)/miniql
+
+# Lexer demo (compilação separada)
+LEXER_DEMO_SOURCES = $(SRC_DIR)/lexer/lexer_demo.cpp $(SRC_DIR)/lexer/scanner.cpp $(wildcard $(SRC_DIR)/lexer/scanner/*.cpp)
+LEXER_DEMO_TARGET = $(BIN_DIR)/lexer_demo
 
 # Regra principal
 all: $(TARGET)
@@ -22,6 +27,8 @@ all: $(TARGET)
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/shell
+	@mkdir -p $(BUILD_DIR)/lexer
+	@mkdir -p $(BUILD_DIR)/lexer/scanner
 
 # Linkagem
 $(TARGET): $(BUILD_DIR) $(OBJECTS)
@@ -37,9 +44,20 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 run: $(TARGET)
 	./$(TARGET)
 
+# Build do demo do lexer
+lexer-demo: $(LEXER_DEMO_TARGET)
+
+$(LEXER_DEMO_TARGET): $(LEXER_DEMO_SOURCES)
+	$(CXX) $(CXXFLAGS) $(LEXER_DEMO_SOURCES) -o $(LEXER_DEMO_TARGET)
+	@echo "Lexer demo compilado: $(LEXER_DEMO_TARGET)"
+
+# Rodar demo do lexer
+run-lexer-demo: $(LEXER_DEMO_TARGET)
+	./$(LEXER_DEMO_TARGET)
+
 # Limpeza
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
+	rm -rf $(BUILD_DIR) $(TARGET) $(LEXER_DEMO_TARGET)
 	@echo "Limpeza completa"
 
 # Rebuild completo
@@ -53,4 +71,4 @@ debug: clean all
 release: CXXFLAGS += -O3 -DNDEBUG
 release: clean all
 
-.PHONY: all clean run rebuild debug release
+.PHONY: all clean run rebuild debug release lexer-demo run-lexer-demo

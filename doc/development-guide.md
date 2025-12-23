@@ -52,7 +52,13 @@ projeto.server.cplus/
 │   ├── main.cpp           # Entry point
 │   ├── shell/
 │   │   └── repl.cpp       # ✅ Shell interativo
-│   ├── lexer/             # ⏳ Tokenização SQL
+│   ├── lexer/             # ✅ Tokenização SQL
+│   │   ├── scanner.cpp   # ✅ Scanner principal
+│   │   └── scanner/      # ✅ Funções auxiliares
+│   │       ├── scan_number.cpp      # ✅ Números
+│   │       ├── scan_string.cpp      # ✅ Strings
+│   │       ├── scan_identifier.cpp  # ✅ Identificadores
+│   │       └── scan_comment.cpp     # ✅ Comentários
 │   ├── parser/            # ⏳ Análise sintática
 │   ├── ast/               # ⏳ Árvore sintática
 │   ├── executor/          # ⏳ Motor de execução
@@ -64,6 +70,7 @@ projeto.server.cplus/
 │   ├── shell/
 │   │   └── repl.h         # ✅ Interface do REPL
 │   ├── lexer/
+│   │   └── scanner.h      # ✅ Definições do Lexer
 │   ├── parser/
 │   ├── ast/
 │   ├── executor/

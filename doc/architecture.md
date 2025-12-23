@@ -142,7 +142,40 @@ std::vector<Token> tokens = {
 };
 ```
 
-**Estado Atual:** ⏳ Planejado (FASE 3)
+**Estado Atual:** ✅ **IMPLEMENTADO** (FASE 3)
+
+**Estrutura de Arquivos:**
+```
+include/lexer/
+  └── scanner.h              # Definições de Token, TokenType, Scanner
+
+src/lexer/
+  ├── scanner.cpp            # Implementação principal do scanner
+  └── scanner/               # Funções auxiliares organizadas
+      ├── scan_number.cpp    # Reconhecimento de números
+      ├── scan_string.cpp    # Reconhecimento de strings
+      ├── scan_identifier.cpp # Reconhecimento de identificadores/keywords
+      └── scan_comment.cpp   # Reconhecimento de comentários
+```
+
+**Tokens Suportados:**
+- **Keywords SQL:** SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, TABLE, FROM, WHERE, VALUES, AND, OR, NOT, etc.
+- **Tipos de Dados:** INT, TEXT, REAL, BLOB, DATE, TIMESTAMP
+- **Identificadores:** Nomes de tabelas, colunas (case-insensitive)
+- **Literais:** Números (123, 45.67), Strings ('texto', "texto")
+- **Operadores:** =, !=, <>, <, <=, >, >=, +, -, *, /, %
+- **Delimitadores:** (, ), ,, ;, .
+- **Comentários:** -- linha única, /* bloco */
+
+**Características:**
+- ✅ Tokenização completa de SQL
+- ✅ Detecção de erros léxicos com linha/coluna
+- ✅ Suporte a comentários (ignorados)
+- ✅ Keywords case-insensitive
+- ✅ Strings com aspas simples e duplas
+- ✅ Números inteiros e decimais
+
+**Baseado em:** Regras de análise léxica padrão (GeeksforGeeks - Introduction of Lexical Analysis)
 
 ---
 
