@@ -1,0 +1,25 @@
+# Build outputs
+miniql
+*.o
+*.out
+build/
+output/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database files (gerados em runtime)
+data/
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
