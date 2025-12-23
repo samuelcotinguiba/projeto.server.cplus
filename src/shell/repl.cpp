@@ -15,28 +15,31 @@ void REPL::run() {
     std::string buffer;
     
     while (running_) {
-        // Define o prompt baseado se estamos continuando um comando
         std::string prompt = buffer.empty() ? "miniql> " : "     -> ";
         std::string line = readLine(prompt);
         
-        // Ignora linhas vazias
         if (line.empty() && buffer.empty()) {
             continue;
         }
         
         // Comandos meta têm prioridade
-        if (line[0] == '.' && buffer.empty()) {
-            if (!processMetaCommand(line)) {
-                continue;
-            }
-        } else {
-            // Adiciona ao buffer
+        if (!line.empty() && line[0] == '.' && buffer.empty()) {
+            processMetaCommand(line);
+            continue;
+        }
+        
+        // Adiciona ao buffer
+        if (!line.empty()) {
             buffer += line + " ";
-            
-            // Se termina com ;, processa o comando
-            if (!line.empty() && line.back() == ';') {
-                // Remove o ; e espaços extras
-                buffer.pop_back(); // remove ;
+        }
+        
+        // Verifica se termina com ;
+        if (!buffer.empty() && buffer.back() == ' ') {
+            // Remove último espaço para verificar ;
+            size_t last = buffer.find_last_not_of(" \t\n\r");
+            if (last != std::string::npos && buffer[last] == ';') {
+                // Remove espaços e ;
+                buffer = buffer.substr(0, last);
                 
                 // Remove espaços em branco extras
                 buffer.erase(0, buffer.find_first_not_of(" \t\n\r"));
@@ -67,7 +70,7 @@ bool REPL::processMetaCommand(const std::string& command) {
         std::cout << "(Database engine not implemented)\n";
         return false;
     }
-    else if (command.substr(0, 7) == ".schema") {
+    else if (command.length() >= 7 && command.substr(0, 7) == ".schema") {
         std::cout << "Schema command not implemented yet.\n";
         return false;
     }
@@ -83,13 +86,6 @@ bool REPL::processMetaCommand(const std::string& command) {
 void REPL::processSQLCommand(const std::string& sql) {
     std::cout << "SQL Command received: " << sql << "\n";
     std::cout << "(SQL execution not implemented yet)\n";
-    
-    // TODO: Aqui será a integração com:
-    // 1. Lexer (tokenização)
-    // 2. Parser (geração de AST)
-    // 3. Executor (execução)
-    
-    // Por enquanto, apenas exibe o comando recebido
 }
 
 std::string REPL::readLine(const std::string& prompt) {
@@ -98,17 +94,19 @@ std::string REPL::readLine(const std::string& prompt) {
     
     std::string line;
     if (!std::getline(std::cin, line)) {
-        // EOF (Ctrl+D no Unix, Ctrl+Z no Windows)
         running_ = false;
         std::cout << "\n";
         return "";
     }
     
     // Remove espaços em branco das pontas
-    line.erase(0, line.find_first_not_of(" \t\n\r"));
-    line.erase(line.find_last_not_of(" \t\n\r") + 1);
+    size_t start = line.find_first_not_of(" \t\n\r");
+    if (start == std::string::npos) {
+        return "";
+    }
     
-    return line;
+    size_t end = line.find_last_not_of(" \t\n\r");
+    return line.substr(start, end - start + 1);
 }
 
 void REPL::printWelcome() {
