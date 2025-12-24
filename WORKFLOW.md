@@ -682,7 +682,7 @@ class PrimaryIndex {
 
 ### Funcionalidades Core
 - [x] SQL Shell (REPL)
-- [ ] Lexer
+- [x] Lexer
 - [ ] Parser + AST
 - [ ] Catalog
 - [ ] Storage Engine

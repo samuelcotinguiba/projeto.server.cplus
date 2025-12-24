@@ -21,6 +21,124 @@
 **Status:** ✅ Implementado  
 **Localização:** `src/shell/repl.cpp`, `include/shell/repl.h`
 
+---
+
+## 📝 Analisador Léxico (Lexer)
+
+**Status:** ✅ Implementado - Tokenização completa  
+**Localização:** `src/lexer/`, `include/lexer/scanner.h`
+
+### Descrição
+
+Analisador léxico que converte código SQL em uma sequência de tokens para processamento pelo parser.
+
+### Funcionalidades
+
+- ✅ Tokenização de 50+ keywords SQL (SELECT, INSERT, CREATE, etc.)
+- ✅ Reconhecimento de identificadores (nomes de tabelas/colunas)
+- ✅ Reconhecimento de literais (números: `123`, `45.67`, strings: `'texto'`)
+- ✅ Operadores relacionais (`=`, `!=`, `<`, `>`, `<=`, `>=`)
+- ✅ Operadores aritméticos (`+`, `-`, `*`, `/`, `%`)
+- ✅ Delimitadores (`(`, `)`, `,`, `;`, `.`)
+- ✅ Comentários de linha (`--`) e bloco (`/* */`)
+- ✅ Detecção de erros léxicos com linha/coluna
+- ✅ Case-insensitive para keywords SQL
+
+### Estrutura Modular
+
+```
+src/lexer/
+├── scanner.cpp            # Implementação principal (scanTokens, scanToken)
+├── lexer_demo.cpp         # Programa de demonstração
+└── scanner/               # Funções especializadas
+    ├── scan_number.cpp    # Números inteiros e decimais
+    ├── scan_string.cpp    # Strings com aspas simples/duplas
+    ├── scan_identifier.cpp # Identificadores e keywords
+    └── scan_comment.cpp   # Comentários de linha e bloco
+```
+
+### Uso
+
+```bash
+# Testar tokenização
+make lexer-demo
+./lexer_demo
+```
+
+**Exemplo:**
+```sql
+Entrada: SELECT * FROM users WHERE id = 1;
+
+Tokens gerados:
+[1:1]  SELECT      'SELECT'
+[1:8]  STAR        '*'
+[1:10] FROM        'FROM'
+[1:15] IDENTIFIER  'users'
+[1:21] WHERE       'WHERE'
+[1:27] IDENTIFIER  'id'
+[1:30] EQUAL       '='
+[1:32] NUMBER      '1'
+[1:33] SEMICOLON   ';'
+[1:34] END_OF_FILE ''
+```
+
+### Código de Exemplo
+
+```cpp
+#include "lexer/scanner.h"
+
+using namespace miniql::lexer;
+
+// Criar scanner
+Scanner scanner("SELECT * FROM users;");
+
+// Tokenizar
+std::vector<Token> tokens = scanner.scanTokens();
+
+// Verificar erros
+if (scanner.hasErrors()) {
+    for (const auto& error : scanner.getErrors()) {
+        std::cout << error << std::endl;
+    }
+}
+
+// Processar tokens
+for (const auto& token : tokens) {
+    std::cout << token.typeToString() << " " 
+              << token.lexeme << std::endl;
+}
+```
+
+### Fluxo de Tokenização
+
+```
+1. Scanner recebe código SQL como string
+2. scanTokens() itera sobre cada caractere
+3. scanToken() identifica tipo de token:
+   ├─ Whitespace → ignora
+   ├─ Dígito → scanNumber()
+   ├─ Letra/_ → scanIdentifier() ou keyword
+   ├─ ' ou " → scanString()
+   ├─ - → scanComment() ou operador
+   ├─ / → scanComment() ou operador
+   ├─ Operador → adiciona token
+   └─ Delimitador → adiciona token
+4. Retorna vetor de tokens
+```
+
+### Tratamento de Erros
+
+- Caracteres inválidos detectados
+- Strings não terminadas
+- Comentários de bloco não fechados
+- Erros incluem linha e coluna
+
+**Exemplo:**
+```
+[Line 1, Col 8] Unexpected character: '@'
+[Line 2, Col 15] Unterminated string literal
+```
+
 ### Descrição
 
 Interface interativa de linha de comando para o MiniQL, similar ao `sqlite3` ou `mysql` client.

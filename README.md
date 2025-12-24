@@ -12,7 +12,7 @@
 Desenvolver um **database engine funcional** (não um wrapper), inspirado em SQLite/PostgreSQL, que implementa:
 
 - ✅ Linguagem SQL subset
-- ✅ Lexer (Analisador Léxico) próprio
+- ✅ **Lexer (Analisador Léxico)** - Tokenização completa com 50+ keywords
 - 🔄 Parser e AST (em desenvolvimento)
 - 🔄 Motor de execução de queries (planejado)
 - 🔄 Persistência em disco (planejado)
@@ -44,6 +44,14 @@ miniql> CREATE TABLE users (id INT, name TEXT);
 miniql> INSERT INTO users VALUES (1, 'Ana');
 miniql> SELECT * FROM users;
 miniql> .exit              -- Sair
+```
+
+### Testar o Lexer
+
+```bash
+# Compilar e executar demo de tokenização
+make lexer-demo
+./lexer_demo
 ```
 
 > 📖 **Guia completo:** [doc/GUIDE.md](doc/GUIDE.md)
@@ -78,6 +86,34 @@ DELETE FROM users WHERE id = 2;
 
 ---
 
+## 📂 Estrutura do Projeto
+
+```
+projeto.server.cplus/
+├── include/              # Headers públicos (.h)
+│   ├── lexer/           # Scanner (tokenização)
+│   └── shell/           # REPL (interface)
+├── src/                 # Implementações (.cpp)
+│   ├── main.cpp         # Entry point
+│   ├── lexer/          # Analisador léxico
+│   │   ├── scanner.cpp
+│   │   └── scanner/    # Funções especializadas
+│   └── shell/          # Shell interativo
+├── doc/                 # Documentação
+└── tests/              # Testes (em desenvolvimento)
+```
+
+### Comandos de Build
+
+```bash
+make              # Compila projeto principal
+make lexer-demo   # Compila demo do lexer
+make run          # Executa ./miniql
+make clean        # Remove binários
+```
+
+---
+
 ## 🏗️ Arquitetura
 
 ```
@@ -87,9 +123,11 @@ DELETE FROM users WHERE id = 2;
        │
 ┌──────▼──────┐
 │    Lexer    │  Tokenização SQL (✅ Implementado)
-│             │  • Reconhece keywords, identificadores, literais
+│             │  • 50+ keywords SQL
+│             │  • Números, strings, identificadores
 │             │  • Operadores e delimitadores
-│             │  • Tratamento de erros léxicos
+│             │  • Comentários de linha e bloco
+│             │  • Detecção de erros com linha/coluna
 └──────┬──────┘
        │ Token Stream
 ┌──────▼──────┐
@@ -279,18 +317,13 @@ Isso é **raríssimo** em portfólio de estudante/júnior.
 
 ## 📚 Documentação
 
-### Para Começar
-- **[doc/GUIDE.md](doc/GUIDE.md)** — Guia completo de instalação, uso e desenvolvimento
-
-### Documentação Técnica
-- **[doc/architecture.md](doc/architecture.md)** — Arquitetura detalhada do sistema
-- **[doc/development-guide.md](doc/development-guide.md)** — Guia para desenvolvedores
-- **[doc/technical-decisions.md](doc/technical-decisions.md)** — Decisões técnicas e justificativas
-- **[doc/shell-implementation.md](doc/shell-implementation.md)** — Detalhes do REPL
-- **[WORKFLOW.md](WORKFLOW.md)** — Roadmap e workflow de desenvolvimento
-
-### Documentação de Componentes
-- **[src/lexer/README.md](src/lexer/README.md)** — Analisador Léxico (Lexer)
+- **[doc/GUIDE.md](doc/GUIDE.md)** — Guia completo de uso e desenvolvimento
+- **[doc/COMPONENTS.md](doc/COMPONENTS.md)** — Componentes implementados (Shell, Lexer)
+- **[doc/architecture.md](doc/architecture.md)** — Arquitetura do sistema
+- **[doc/technical-decisions.md](doc/technical-decisions.md)** — Decisões técnicas
+- **[doc/PUBLICO.md](doc/PUBLICO.md)** — Interface pública (.h vs .cpp)
+- **[ESTRUTURA.md](ESTRUTURA.md)** — Estrutura de pastas e funções
+- **[WORKFLOW.md](WORKFLOW.md)** — Roadmap fase a fase
 
 ---
 
@@ -329,10 +362,6 @@ Projeto educacional para portfólio técnico.
 **Samuel Cotinguiba**  
 Projeto de portfólio — Database Engine em C++
 
-<<<<<<< HEAD
-📧 Email: samuelcotinguiba@gmail.com 
-🔗 LinkedIn: samuelcotinguiba
-=======
 📧 Email: [samuelcotinguiba@gmail.com]  
 🔗 LinkedIn: [samuelcotinguiba]  
 🐙 GitHub: [@samuelcotinguiba](https://github.com/samuelcotinguiba)
